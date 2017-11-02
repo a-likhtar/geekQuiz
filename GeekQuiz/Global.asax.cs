@@ -6,7 +6,11 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using GeekQuiz.App_Start;
 using GeekQuiz.Models;
+using SimpleInjector;
+using SimpleInjector.Integration.WebApi;
+using SimpleInjector.Lifestyles;
 
 namespace GeekQuiz
 {
@@ -21,6 +25,8 @@ namespace GeekQuiz
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            SimpleInjectorWebMvcInitializer.Initialize();
         }
     }
 }
