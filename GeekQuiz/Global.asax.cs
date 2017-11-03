@@ -27,7 +27,6 @@ namespace GeekQuiz
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             SimpleInjectorWebMvcInitializer.Initialize();
-            SimpleInjectorWebApiInitializer.Initialize();
         }
     }
 }

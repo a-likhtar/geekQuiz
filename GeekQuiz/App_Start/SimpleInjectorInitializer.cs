@@ -11,7 +11,7 @@ using SimpleInjector.Advanced;
 using SimpleInjector.Integration.Web;
 using SimpleInjector.Integration.Web.Mvc;
 
-[assembly: WebActivator.PostApplicationStartMethod(typeof(GeekQuiz.App_Start.SimpleInjectorWebMvcInitializer), "Initialize")]
+[assembly: WebActivator.PostApplicationStartMethod(typeof(GeekQuiz.App_Start.SimpleInjectorInitializer), "Initialize")]
 
 namespace GeekQuiz.App_Start
 {
@@ -20,7 +20,7 @@ namespace GeekQuiz.App_Start
     using SimpleInjector.Integration.WebApi;
     using Microsoft.Owin.Security;
 
-    public static class SimpleInjectorWebMvcInitializer
+    public static class SimpleInjectorInitializer
     {
         /// <summary>Initialize the container and register it as Web API Dependency Resolver.</summary>
         public static void Initialize()
@@ -31,14 +31,21 @@ namespace GeekQuiz.App_Start
             InitializeContainer(container);
 
             container.RegisterMvcControllers(Assembly.GetExecutingAssembly());
-       
+            container.RegisterWebApiControllers(GlobalConfiguration.Configuration);
+
             container.Verify();
             
             DependencyResolver.SetResolver(new SimpleInjectorDependencyResolver(container));
+            GlobalConfiguration.Configuration.DependencyResolver =
+                new SimpleInjectorWebApiDependencyResolver(container);
         }
      
         private static void InitializeContainer(Container container)
         {
+            //For web api
+            container.Register<TriviaContext>(Lifestyle.Scoped);
+
+            //For web mvc
             container.Register<ApplicationUserManager>(Lifestyle.Scoped);
             container.Register<ApplicationSignInManager>(Lifestyle.Scoped);
             container.Register<ApplicationDbContext>(Lifestyle.Scoped);
