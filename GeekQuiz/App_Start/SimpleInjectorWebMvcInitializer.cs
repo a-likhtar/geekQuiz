@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using GeekQuiz.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using SimpleInjector.Advanced;
 using SimpleInjector.Integration.Web;
@@ -41,6 +42,7 @@ namespace GeekQuiz.App_Start
             container.Register<ApplicationUserManager>(Lifestyle.Scoped);
             container.Register<ApplicationSignInManager>(Lifestyle.Scoped);
             container.Register<ApplicationDbContext>(Lifestyle.Scoped);
+            container.Register<IdentityFactoryOptions<ApplicationUserManager>>(Lifestyle.Scoped);
             container.Register<IUserStore<ApplicationUser>>(() => new UserStore<ApplicationUser>(container.GetInstance<ApplicationDbContext>()), Lifestyle.Scoped);
 
             container.Register<IAuthenticationManager>(() =>
